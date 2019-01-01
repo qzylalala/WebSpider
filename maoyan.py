@@ -4,6 +4,7 @@ from requests.exceptions import RequestException
 import re
 import time
 
+<<<<<<< HEAD
 #to get the information from the url
 def get_one_page(url):
     try:
@@ -13,10 +14,22 @@ def get_one_page(url):
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
             return response.text#return the contents
+=======
+
+def get_one_page(url):
+    try:
+        headers = {'Users-Agent': 'Mozilla/5.0(Macintosh;Intel Mac OS X\
+         10_13_3) AppleWebKit/537.36 (KHTML,like Gecko)\
+          Chrome/65.0.3325.162 safari/537.36'}
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            return response.text
+>>>>>>> b8bc0f307a240bc4615a4f5dbf31043dd1f592d5
         return None
     except RequestException:
         return None
 
+<<<<<<< HEAD
 #parse the content and find what you need
 def parse_one_page(html):
     pattern = re.compile('<dd>.*?board-index.*?>(\d+)</i>.*?data-src="(.*?)".*?name"><a'
@@ -25,11 +38,20 @@ def parse_one_page(html):
     items = re.findall(pattern, html)
     for item in items:
         yield {
+=======
+
+def parse_one_page(html):
+    pattern = re.compile('<dd>.*?board-index.*?>(\d+)</i>.*?data-src="(.*?)\".*?name"><a' '.*?>(.*?)</a>.*?star">(.*?)</p>.*?releasetime">(.*?)</p>'  r'.*?integer">(.*?)</i>.*?fraction">(.*?)</i>.*?</dd>', re.S)
+    items = re.findall(pattern, str(html))
+    for item in items:
+        yield{
+>>>>>>> b8bc0f307a240bc4615a4f5dbf31043dd1f592d5
             'index': item[0],
             'image': item[1],
             'title': item[2],
             'actor': item[3].strip()[3:],
             'time': item[4].strip()[5:],
+<<<<<<< HEAD
             'score': item[5] + item[6]
         }
 
@@ -39,6 +61,17 @@ def write_to_file(content):
         f.write(json.dumps(content, ensure_ascii=False) + '\n')
 
 #to start the script
+=======
+            'score': item[5]+item[6]
+        }
+
+
+def write_to_file(content):
+    with open('result.txt', 'a', encoding='utf-8') as f:
+        f.write(json.dumps(content, ensure_ascii=False)+'\n')
+
+
+>>>>>>> b8bc0f307a240bc4615a4f5dbf31043dd1f592d5
 def main(offset):
     url = 'http://maoyan.com/board/4?offset=' + str(offset)
     html = get_one_page(url)
@@ -49,5 +82,10 @@ def main(offset):
 
 if __name__ == '__main__':
     for i in range(10):
+<<<<<<< HEAD
         main(offset=i * 10)
         time.sleep(1)
+=======
+        main(offset=i*10)
+        time.sleep(1)
+>>>>>>> b8bc0f307a240bc4615a4f5dbf31043dd1f592d5
